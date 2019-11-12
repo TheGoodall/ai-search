@@ -125,7 +125,7 @@ else:
 file_string = file_string + ","         # we need to add a final comma to find the city distances
                                         # as we look for numbers between commas
 print("I'm working with the file " + input_file + ".")
-                                        
+
 # get the name of the file
 
 name_of_file,to_index,flag = get_string_between("NAME=", ",", file_string, 0)
@@ -162,15 +162,15 @@ else:
 ############ YOU NEED TO INCLUDE THE FOLLOWING PARAMETERS:                                 ############
 ############ "my_user_name" = your user-name, e.g., mine is dcs0ias                        ############
 
-my_user_name = "dcs0ias"
+my_user_name = "xfdg93"
 
 ############ "my_first_name" = your first name, e.g., mine is Iain                         ############
 
-my_first_name = "Iain"
+my_first_name = "James"
 
 ############ "my_last_name" = your last name, e.g., mine is Stewart                        ############
 
-my_last_name = "Stewart"
+my_last_name = "Goodall"
 
 ############ "alg_code" = the two-digit code that tells me which algorithm you have        ############
 ############ implemented (see the assignment pdf), where the codes are:                    ############
@@ -210,7 +210,7 @@ codes_and_names = {'BF' : 'brute-force search',
 ############    now the code for your algorithm should begin                               ############
 #######################################################################################################
 
-        
+
 
 
 
@@ -270,8 +270,6 @@ if flag == "good":
         f.write("\nNOTE = " + added_note)
     f.close()
     print("I have successfully written the tour to the output file " + output_file_name + ".")
-    
-    
 
 
 
@@ -283,6 +281,8 @@ if flag == "good":
 
 
 
-    
+
+
+
 
 
