@@ -111,9 +111,9 @@ def make_distance_matrix_symmetric(num_cities):
 ############ supplied internally as the default file or via a command line execution.      ############
 ############ if your input file does not exist then the program will crash.                ############
 
-input_file = "AISearchfile021.txt"
+#input_file = "AISearchfile021.txt"
 
-#input_file = "AISearchfile042.txt"
+input_file = "AISearchfile535.txt"
 #######################################################################################################
 
 # you need to worry about the code below until I tell you; that is, do not touch it!
@@ -213,10 +213,10 @@ codes_and_names = {'BF' : 'brute-force search',
 #######################################################################################################
 
 import math
+import time
 
+starttime = time.time()
 distance_matrix = distance_matrix
-
-
 
 
 def print_matrix(matrix):
@@ -245,6 +245,7 @@ def mst(distance_matrix):
                         minimum_edge = [node, i]
         nodes.append(minimum_edge[1])
         edges.append(minimum_edge)
+    print("Successfully generated minimum spanning tree")
     return edges
 
 
@@ -258,6 +259,7 @@ def nodes_with_odd_degree(T, distance_matrix):
                 odd_degree = not odd_degree
         if odd_degree:
             nodes.append(i)
+    print("successfully seperated out nodes with odd degree")
     return nodes
 
 def mwpm(O, distance_matrix):
@@ -274,30 +276,76 @@ def mwpm(O, distance_matrix):
         O_distance_matrix[i] = new_row
     for i, row in enumerate(O_distance_matrix):
         O_distance_matrix[i][i] = math.inf
+    print("Successfully generated distance matrix for odd degree subgraph")
+    matching = []
+    O_copy = O[:]
+    while O_distance_matrix:
 
+        minimum_edge = []
+        minimum = math.inf
+        for i, row in enumerate(O_distance_matrix):
+            for j, item in enumerate(O_distance_matrix[i]):
+                if item < minimum:
+                    minimum = item
+                    minimum_edge = [i,j]
+        matching.append([O_copy[minimum_edge[k]] for k in [0,1]])
 
-    #hungarian algorithm
-    for i, row in enumerate(O_distance_matrix):
-        minimum = min(row)
-        O_distance_matrix[i] = [j-minimum for j in row]
-    for i in range(len(O_distance_matrix)):
-        minimum = min([O_distance_matrix[j][i] for j in range(len(O_distance_matrix))])
-        for j, row in enumerate(O_distance_matrix):
-            row[i] -= minimum
-            O_distance_matrix[j] = row
-    print_matrix(O_distance_matrix)
+        del O_copy[max(minimum_edge)]
+        del O_copy[min(minimum_edge)]
+        del O_distance_matrix[max(minimum_edge)]
+        del O_distance_matrix[min(minimum_edge)]
+        for i, row in enumerate(O_distance_matrix):
+            del O_distance_matrix[i][max(minimum_edge)]
+            del O_distance_matrix[i][min(minimum_edge)]
+    print("Successfully generated matching")
+    return(matching)
+
+def eulerian(H, distance_matrix):
+
+    nodes = [0]
+    while H:
+        found = False
+        for i, edge in enumerate(H):
+            if nodes[-1] in edge:
+                if edge[0] == nodes[-1]:
+                    nodes.append(edge[1])
+                else:
+                    nodes.append(edge[0])
+                del H[i]
+                found = True
+                break
+        if found == False:
+            nodes.append(nodes.pop(0))
+    print("successfully generated eulerian cycle")
+    return nodes
+
+def hamiltonian(eulerian_circuit):
+    hamiltonian_circuit = []
+    for node in eulerian_circuit:
+        if node not in hamiltonian_circuit:
+            hamiltonian_circuit.append(node)
+    print("successfully converted eulerian cycle into hamiltonian cycle")
+    return hamiltonian_circuit
+
+def tour_length(tour, distance_matrix):
+    print(tour)
+    check_tour_length = 0
+    for i in range(0,len(distance_matrix)-1):
+        check_tour_length = check_tour_length + distance_matrix[tour[i]][tour[i+1]]
+    check_tour_length = check_tour_length + distance_matrix[tour[num_cities-1]][tour[0]]
+    return check_tour_length
 
 
 T = mst(distance_matrix)
 O = nodes_with_odd_degree(T, distance_matrix)
 M = mwpm(O, distance_matrix)
+H = M+T
+eulerian_circuit = eulerian(H, distance_matrix)
+hamiltonian_circuit = hamiltonian(eulerian_circuit)
+tour_length = tour_length(hamiltonian_circuit, distance_matrix)
 
-
-
-
-
-
-
+tour = hamiltonian_circuit
+print("total time taken = ", time.time()-starttime)
 
 #######################################################################################################
 ############ the code for your algorithm should now be complete and you should have        ############
