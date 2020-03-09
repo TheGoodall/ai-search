@@ -211,17 +211,29 @@ codes_and_names = {'BF' : 'brute-force search',
 ############    now the code for your algorithm should begin                               ############
 #######################################################################################################
 
-import math
-tour = [0]
-while len(tour) < len(distance_matrix):
-    tour.append(min(range(len(distance_matrix)), key = lambda k : distance_matrix[tour[-1]][k] if k not in tour else math.inf))
+
+import math, itertools, time
+tour = [i for i in range(len(distance_matrix))]
+tour_length = math.inf
+
+def findlength(tour):
+    tour_length = 0
+    for i in range(0,num_cities-1):
+        tour_length = tour_length + distance_matrix[tour[i]][tour[i+1]]
+    tour_length = tour_length + distance_matrix[tour[num_cities-1]][tour[0]]
+    return tour_length
 
 
 
-tour_length = 0
-for i in range(0,num_cities-1):
-    tour_length = tour_length + distance_matrix[tour[i]][tour[i+1]]
-tour_length = tour_length + distance_matrix[tour[num_cities-1]][tour[0]]
+starttime = time.time()
+for possibletour in itertools.permutations(tour):
+    possiblelength = findlength(possibletour)
+    if possiblelength < tour_length:
+        tour_length = possiblelength
+        tour = possibletour
+    if time.time() - starttime > 100:
+        break
+
 
 
 #######################################################################################################

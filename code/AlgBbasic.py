@@ -111,9 +111,8 @@ def make_distance_matrix_symmetric(num_cities):
 ############ supplied internally as the default file or via a command line execution.      ############
 ############ if your input file does not exist then the program will crash.                ############
 
-#input_file = "AISearchfile021.txt"
+input_file = "AISearchfile021.txt"
 
-input_file = "AISearchfile535.txt"
 #######################################################################################################
 
 # you need to worry about the code below until I tell you; that is, do not touch it!
